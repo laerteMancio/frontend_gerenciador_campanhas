@@ -1,0 +1,13 @@
+.app-container{
+padding: 20px;
+}
+
+.topo-acao{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+
+    
+}

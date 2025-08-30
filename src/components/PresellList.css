@@ -1,0 +1,183 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.presell-list {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.presell-list h2 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.presell-list p {
+  text-align: center;
+  color: #555;
+  margin-top: 20px;
+}
+
+.erro {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+/* Tabela */
+.presell-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.presell-list th,
+.presell-list td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.presell-list thead {
+  background-color: #007bff;
+  color: white;
+}
+
+.presell-list tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.presell-list tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.presell-list tbody tr:hover {
+  background-color: #e9f0ff;
+}
+
+/* Links */
+.presell-list a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.presell-list a:hover {
+  text-decoration: underline;
+}
+
+/* Botões */
+.presell-list button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.presell-list button:hover {
+  opacity: 0.85;
+}
+
+.presell-list button:nth-child(1) {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.presell-list button:nth-child(2) {
+  background-color: #28a745;
+  color: white;
+}
+
+.presell-list button:nth-child(3) {
+  background-color: #ffc107;
+  color: white;
+}
+
+.presell-list button:nth-child(4) {
+  background-color: #dc3545;
+  color: white;
+}
+
+.acoes-icons {
+  display: flex;
+  gap: 10px; /* espaçamento entre os ícones */
+  align-items: center;
+}
+
+.acoes-icons svg {
+  cursor: pointer;
+  font-size: 18px; /* tamanho do ícone */
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.acoes-icons svg:hover {
+  color: #007bff; /* muda a cor ao passar o mouse */
+}
+
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+  .presell-list table,
+  .presell-list thead,
+  .presell-list tbody,
+  .presell-list th,
+  .presell-list td,
+  .presell-list tr {
+    display: block;
+  }
+
+  .presell-list thead {
+    display: none;
+  }
+
+  .presell-list tbody tr {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .presell-list td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+
+  .presell-list td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #333;
+  }
+
+  .presell-list button {
+    margin: 5px 2px 0 0;
+  }
+
+  .acoes-icons {
+    display: flex;
+    gap: 10px; /* espaço entre os ícones */
+    align-items: center;
+  }
+
+  .acoes-icons svg {
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    transition: all 0.2s;
+  }
+
+  .acoes-icons svg:hover {
+    color: #007bff; /* muda de cor ao passar o mouse */
+  }
+}
