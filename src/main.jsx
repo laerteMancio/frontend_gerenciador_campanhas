@@ -14,12 +14,16 @@ import Presell from "./components/Presell";
 import PresellList from "./components/PresellList";
 import PresellTemplate from "./components/PresellTemplate";
 import Register from "./components/Register";
+import BackButton from "./components/BackButton"
+import PresellPage from "./components/PresellPage";
 
 function App() {
   const [usuario, setUsuario] = useState(null);
 
   return (
+
     <BrowserRouter>
+      <BackButton />
       <Routes>
         {/* Login público */}
         <Route path="/login" element={<Login onLoginSuccess={setUsuario} />} />
@@ -56,8 +60,25 @@ function App() {
           }
         />
 
-        {/* Exibição de um Presell gerado */}
-        <Route path="/presell/:nomePagina" element={<PresellTemplate />} />
+        {/* Exibição Template */}
+        <Route
+          path="/templates"
+          element={
+            <PresellTemplate
+              titulo="Meu Presell"
+              subtitulo="Subtítulo de teste"
+              descricao="Descrição do produto ou serviço."
+              imagemUrl="https://via.placeholder.com/600x400"
+              linkAfiliado="https://example.com"
+              destaque="Oferta especial!"
+            />
+          }
+        />
+
+        {/*  Template personalizado*/}
+        <Route path="/presell/:nomePagina" element={<PresellPage />} />
+
+
 
         {/* Cadastro de usuários – apenas admin */}
         <Route

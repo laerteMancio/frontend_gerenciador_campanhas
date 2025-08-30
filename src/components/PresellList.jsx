@@ -8,6 +8,8 @@ function PresellList() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
 
+  const FRONTEND_BASE_URL = "http://localhost:5173/presell"; // base local do frontend
+
   useEffect(() => {
     const fetchLinks = async () => {
       try {
@@ -23,7 +25,6 @@ function PresellList() {
         }
 
         const data = await resp.json();
-        
         setLinks(data.links);
       } catch (err) {
         console.error(err);
@@ -36,14 +37,12 @@ function PresellList() {
     fetchLinks();
   }, []);
 
-  // Função para copiar URL
   const copiarLink = (url) => {
     navigator.clipboard.writeText(url)
       .then(() => alert("Link copiado!"))
       .catch(() => alert("Falha ao copiar o link"));
   };
 
-  // Função para excluir registro
   const excluirLink = async (id) => {
     if (!window.confirm("Deseja realmente excluir esta página?")) return;
 
@@ -80,33 +79,33 @@ function PresellList() {
               <th>Nome da página</th>
               <th>Domínio</th>
               <th>Ações</th>
-
             </tr>
           </thead>
           <tbody>
-            {links.map((link, index) => (
-              <tr key={`${link.id}-${index}`}>
-                <td data-label="Criado em">{new Date(link.criado_em).toLocaleString("pt-BR")}</td>
-                <td data-label="Nome da Página">{link.nome_pagina}</td>
-                <td data-label="Dominio">{link.dominio.replace(/^https?:\/\//, "")}</td>
+            {links.map((link, index) => {
+              const localPresellUrl = `${FRONTEND_BASE_URL}/${link.nome_pagina.toLowerCase()}`;
 
-                <td data-label="Ações">
-                  <div className="acoes-icons">
-                    <FiCopy title="Copiar" onClick={() => copiarLink(link.url_final)} />
-                    <FiEye title="Visualizar" onClick={() => window.open(link.url_final, "_blank")} />
-                    <FiEdit title="Editar" onClick={() => alert("Implementar edição")} />
-                    <FiTrash2 title="Excluir" onClick={() => excluirLink(link.id)} />
-                  </div>
-                </td>
-              </tr>
-            ))}
-
+              return (
+                <tr key={`${link.id}-${index}`}>
+                  <td data-label="Criado em">{new Date(link.criado_em).toLocaleString("pt-BR")}</td>
+                  <td data-label="Nome da Página">{link.nome_pagina}</td>
+                  <td data-label="Dominio">{link.dominio.replace(/^https?:\/\//, "")}</td>
+                  <td data-label="Ações">
+                    <div className="acoes-icons">
+                      <FiCopy title="Copiar" onClick={() => copiarLink(localPresellUrl)} />
+                      <FiEye title="Visualizar" onClick={() => window.open(localPresellUrl, "_blank")} />
+                      <FiEdit title="Editar" onClick={() => alert("Implementar edição")} />
+                      <FiTrash2 title="Excluir" onClick={() => excluirLink(link.id)} />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}
     </div>
   );
-
 }
 
 export default PresellList;
