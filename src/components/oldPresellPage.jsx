@@ -1,7 +1,6 @@
-// PresellPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PresellTemplate from "./PresellTemplate";
+import PresellTemplate from "./oldPresellTemplate";
 
 const PresellPage = () => {
   const { nomePagina } = useParams();
@@ -10,7 +9,7 @@ const PresellPage = () => {
   useEffect(() => {
     const fetchPresell = async () => {
       try {
-        const resp = await fetch(`http://localhost:3000/presell/${nomePagina}`);
+        const resp = await fetch(`https://gerador-presell.vercel.app/presell/${nomePagina}`);
         const data = await resp.json();
         if (resp.ok) setPresell(data.presell);
         else console.error(data.message);
@@ -26,12 +25,16 @@ const PresellPage = () => {
 
   return (
     <PresellTemplate
-      titulo={presell.titulo}
-      subtitulo={presell.subtitulo}
-      descricao={presell.descricao}
-      imagemUrl={presell.imagem_url}
-      linkAfiliado={presell.link_afiliado}
-      destaque={presell.destaque}
+      titulo={presell.titulo || "Título não disponível"}
+      subtitulo={presell.subtitulo || ""}
+      descricao={presell.descricao || ""}
+      imagemUrl={presell.imagem_url || ""}
+      linkAfiliado={presell.link_afiliado || ""}
+      destaque={presell.destaque || "Oferta especial!"} // sempre terá algo
+      idioma={presell.idioma || "pt"}
+      promocoes={presell.promocoes || []}
+      reviews={presell.reviews || []}
+      benefits={presell.benefits || ""}
     />
   );
 };

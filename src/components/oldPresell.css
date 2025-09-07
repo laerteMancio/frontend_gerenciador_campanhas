@@ -1,0 +1,141 @@
+/* Fonte e cores gerais */
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px 35px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Inputs e Textareas */
+input[type="text"],
+input[type="file"],
+textarea,
+select {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  outline: none;
+}
+
+textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+input[type="file"] {
+  padding: 4px;
+}
+
+/* Flex para input + file */
+.input-file-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Botão */
+button {
+  padding: 12px;
+  background: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #357abd;
+}
+
+/* Resultado */
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #eaf4ff;
+  border: 1px solid #b6ddff;
+  border-radius: 8px;
+}
+
+.result a {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+.result a:hover {
+  text-decoration: underline;
+}
+
+/* Mensagens de erro */
+.error {
+  margin-top: 10px;
+  color: #d9534f;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Benefícios */
+.benefits {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f0f8ff;
+  border: 1px solid #b6ddff;
+  border-radius: 6px;
+}
+
+/* Responsividade */
+@media (max-width: 650px) {
+  .container {
+    padding: 20px;
+    margin: 20px;
+  }
+
+  .input-file-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  input[type="file"] {
+    width: 100%;
+  }
+}

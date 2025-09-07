@@ -8,12 +8,12 @@ function PresellList() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
 
-  const FRONTEND_BASE_URL = "http://localhost:5173/presell"; // base local do frontend
+  const FRONTEND_BASE_URL = "gerador-presell.vercel.app/api/presell"; // base local do frontend
 
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const resp = await fetch("http://localhost:3000/links", {
+        const resp = await fetch("https://gerador-presell.vercel.app/links", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -25,6 +25,7 @@ function PresellList() {
         }
 
         const data = await resp.json();
+                
         setLinks(data.links);
       } catch (err) {
         console.error(err);
@@ -47,7 +48,7 @@ function PresellList() {
     if (!window.confirm("Deseja realmente excluir esta página?")) return;
 
     try {
-      const resp = await fetch(`http://localhost:3000/links/${id}`, {
+      const resp = await fetch(`https://gerador-presell.vercel.app/links/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

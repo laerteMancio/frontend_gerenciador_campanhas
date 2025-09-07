@@ -1,0 +1,206 @@
+.presell-container-hero {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* centraliza verticalmente a imagem em relação ao texto */
+  justify-content: center;
+  width: 100%;
+  height: 100vh; /* ocupa toda a altura da tela */
+  padding: 40px; /* reduzido para caber na tela */
+  background-color: #f9f9f9;
+  gap: 40px;
+  font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  overflow: hidden; /* evita scroll vertical */
+}
+
+.presell-conteudo-hero {
+  flex: 0 0 55%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  text-align: left;
+}
+
+.presell-destaque-hero {
+  background-color: #ff5e57;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  width: fit-content;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.presell-titulo-hero {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #1b1b1b;
+  line-height: 1.2;
+}
+
+.presell-subtitulo-hero {
+  font-size: 1.6rem;
+  color: #444;
+  line-height: 1.3;
+}
+
+/* Benefits */
+.presell-benefits-hero {
+  background-color: #e3f2fd;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.presell-benefits-hero h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #1976d2;
+}
+
+.presell-benefits-hero p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Promoções */
+.presell-promocoes {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.presell-promocoes li {
+  background-color: #fffae6;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Reviews */
+.presell-reviews {
+  margin: 20px 0;
+}
+
+.presell-reviews h3 {
+  font-size: 1.3rem;
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.presell-reviews ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presell-review-item {
+  background-color: #e8f0fe;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #333;
+  font-style: italic;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+/* Botão */
+.presell-botao-hero {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 16px 40px;
+  background-color: #1976d2;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.presell-botao-hero:hover {
+  background-color: #1565c0;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+/* Imagem */
+.presell-imagem-hero {
+  flex: 0 0 45%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* centraliza verticalmente a imagem */
+  padding: 20px;
+  position: relative;
+  border-radius: 12px;
+}
+
+.presell-imagem-hero::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #cccccc 0%, #e0e0e0 100%);
+  border-radius: 12px;
+  z-index: 0;
+}
+
+.presell-imagem-hero img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-height: 80vh; /* ajusta altura para não estourar */
+  object-fit: contain;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .presell-container-hero {
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    gap: 25px;
+    height: auto; /* permite que mobile cresça se necessário */
+  }
+
+  .presell-conteudo-hero,
+  .presell-imagem-hero {
+    flex: 1 1 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .presell-titulo-hero {
+    font-size: 2.2rem;
+  }
+
+  .presell-subtitulo-hero {
+    font-size: 1.4rem;
+  }
+
+  .presell-botao-hero {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+  }
+
+  .presell-imagem-hero img {
+    max-height: 50vh;
+  }
+}

@@ -1,0 +1,58 @@
+.montar-presell {
+  display: flex;
+  gap: 40px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Formulário */
+.formulario {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario h2,
+.formulario h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.formulario input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+
+/* Inputs de FAQ agrupados */
+.faq-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+/* Preview */
+.preview {
+  flex: 1;
+  max-width: 900px;
+}
+
+.preview h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .montar-presell {
+    flex-direction: column;
+  }
+
+  .preview {
+    max-width: 100%;
+  }
+}

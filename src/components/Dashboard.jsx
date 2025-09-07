@@ -9,12 +9,12 @@ function Dashboard({ setTela, admin }) {
   const navigate = useNavigate();
 
 
-  const handleCriarPagina = () => {
+  const handleVisualizaPresell = () => {
     navigate("/presell");
   };
 
-   const handlePresellTemplate = () => {
-    navigate("/templates");
+   const handleMontarPresell = () => {
+    navigate("/montar-presell");
   };
 
   return (
@@ -22,8 +22,8 @@ function Dashboard({ setTela, admin }) {
       
 
       <div className="pages-section">
-        <button onClick={handleCriarPagina}>Criar Página</button>
-        <button onClick={handlePresellTemplate}>Template</button>
+        <button onClick={handleVisualizaPresell}>Visualiza Presell</button>
+        <button onClick={handleMontarPresell}>Montar Presell</button>
       </div>
       <div className="pages-section">
         <PresellList />

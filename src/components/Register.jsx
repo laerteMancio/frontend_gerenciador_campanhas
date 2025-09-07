@@ -24,7 +24,7 @@ function Register({ usuario, onRegisterSuccess }) {
     }
 
     try {
-      const resp = await fetch("http://localhost:3000/register", {
+      const resp = await fetch("https://gerador-presell.vercel.app/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
