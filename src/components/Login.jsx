@@ -13,8 +13,7 @@ function Login({ onLoginSuccess }) {
     setErro("");
 
     try {
-      // ✅ Usando rota relativa ao proxy configurado no Vite
-      const resp = await fetch("/api/login", {
+      const resp = await fetch("https://gerador-presell.vercel.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -40,6 +39,7 @@ function Login({ onLoginSuccess }) {
       console.error(err);
     }
   };
+
 
 
   return (

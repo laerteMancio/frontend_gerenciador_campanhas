@@ -135,7 +135,7 @@ document.querySelectorAll('.faq h3').forEach((h3, index) => {
         },
       };
 
-      const apiUrl = `${import.meta.env.VITE_API_URL}/publicar-presell`;
+      const apiUrl = `https://gerador-presell.vercel.app/publicar-presell`;
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
