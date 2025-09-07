@@ -106,23 +106,7 @@ const Presell = ({ formData }) => {
           </div>
         </section>
       )}
-
-      {/* Social Proof Section */}
-      {testimonials.length > 0 && (
-        <section className="social-proof">
-          <div className="container">
-            {socialTitle && <h2 className="section-title">{socialTitle}</h2>}
-            {testimonials.map((t, i) => (
-              <div key={i} className="testimonial-card">
-                <blockquote>
-                  <p>"{t.text}"</p>
-                </blockquote>
-                {t.name && <cite>{t.name}</cite>}
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+   
 
       {/* Final CTA Section */}
       {buyLink && (
