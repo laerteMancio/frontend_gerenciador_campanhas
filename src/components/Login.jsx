@@ -25,6 +25,7 @@ function Login({ onLoginSuccess }) {
         // Salvar token e role no localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
+        localStorage.setItem("userId", data.id);
 
         // Notificar componente pai
         onLoginSuccess(data);

@@ -4,39 +4,39 @@ import { FiCopy, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import "./PresellList.css";
 
 function PresellList() {
-  const [links, setLinks] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
 
-  const FRONTEND_BASE_URL = "gerador-presell.vercel.app/api/presell"; // base local do frontend
+  const userId = localStorage.getItem("userId");
+  const FRONTEND_BASE_URL = "https://frontend-gerenciador-campanhas.vercel.app";
 
   useEffect(() => {
-    const fetchLinks = async () => {
+    const fetchProjects = async () => {
       try {
-        const resp = await fetch("https://gerador-presell.vercel.app/links", {
+        if (!userId) throw new Error("userId não fornecido");
+
+        const resp = await fetch(`https://gerador-presell.vercel.app/projects/${userId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
-        if (!resp.ok) {
-          throw new Error("Erro ao buscar links");
-        }
+        if (!resp.ok) throw new Error("Erro ao buscar projetos");
 
         const data = await resp.json();
-                
-        setLinks(data.links);
+        setProjects(data);
       } catch (err) {
         console.error(err);
-        setErro("Não foi possível carregar os links");
+        setErro("Não foi possível carregar os projetos");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLinks();
-  }, []);
+    fetchProjects();
+  }, [userId]);
 
   const copiarLink = (url) => {
     navigator.clipboard.writeText(url)
@@ -44,23 +44,23 @@ function PresellList() {
       .catch(() => alert("Falha ao copiar o link"));
   };
 
-  const excluirLink = async (id) => {
-    if (!window.confirm("Deseja realmente excluir esta página?")) return;
+  const excluirProjeto = async (id) => {
+    if (!window.confirm("Deseja realmente excluir este projeto?")) return;
 
     try {
-      const resp = await fetch(`https://gerador-presell.vercel.app/links/${id}`, {
+      const resp = await fetch(`https://gerador-presell.vercel.app/projects/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      if (!resp.ok) throw new Error("Erro ao excluir link");
+      if (!resp.ok) throw new Error("Erro ao excluir projeto");
 
-      setLinks(links.filter(link => link.id !== id));
+      setProjects(projects.filter(p => p.id !== id));
     } catch (err) {
       console.error(err);
-      alert("Erro ao excluir o link");
+      alert("Erro ao excluir o projeto");
     }
   };
 
@@ -69,34 +69,37 @@ function PresellList() {
 
   return (
     <div className="presell-list">
-      <h2>Minhas Páginas</h2>
-      {links.length === 0 ? (
-        <p>Nenhuma página criada ainda.</p>
+      <h2>Meus Projetos</h2>
+      {projects.length === 0 ? (
+        <p>Nenhum projeto criado ainda.</p>
       ) : (
         <table>
           <thead>
             <tr>
               <th>Data de criação</th>
-              <th>Nome da página</th>
+              <th>Nome do produto</th>
               <th>Domínio</th>
+              <th>Subdomínio</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {links.map((link, index) => {
-              const localPresellUrl = `${FRONTEND_BASE_URL}/${link.nome_pagina.toLowerCase()}`;
-
+            {projects.map((proj, index) => {
+              const subdomainUrl = proj.subdominio || proj.url;
               return (
-                <tr key={`${link.id}-${index}`}>
-                  <td data-label="Criado em">{new Date(link.criado_em).toLocaleString("pt-BR")}</td>
-                  <td data-label="Nome da Página">{link.nome_pagina}</td>
-                  <td data-label="Dominio">{link.dominio.replace(/^https?:\/\//, "")}</td>
+                <tr key={`${proj.id}-${index}`}>
+                  <td data-label="Criado em">{new Date(proj.created_at).toLocaleString("pt-BR")}</td>
+                  <td data-label="Nome do Produto">{proj.nome_produto}</td>
+                  <td data-label="Domínio">{proj.dominio}</td>
+                  <td data-label="Subdomínio">{proj.subdominio || "pendente"}</td>
+                  <td data-label="Status">{proj.status || "pendente"}</td>
                   <td data-label="Ações">
                     <div className="acoes-icons">
-                      <FiCopy title="Copiar" onClick={() => copiarLink(localPresellUrl)} />
-                      <FiEye title="Visualizar" onClick={() => window.open(localPresellUrl, "_blank")} />
+                      <FiCopy title="Copiar" onClick={() => copiarLink(subdomainUrl)} />
+                      <FiEye title="Visualizar" onClick={() => window.open(subdomainUrl, "_blank")} />
                       <FiEdit title="Editar" onClick={() => alert("Implementar edição")} />
-                      <FiTrash2 title="Excluir" onClick={() => excluirLink(link.id)} />
+                      <FiTrash2 title="Excluir" onClick={() => excluirProjeto(proj.id)} />
                     </div>
                   </td>
                 </tr>
