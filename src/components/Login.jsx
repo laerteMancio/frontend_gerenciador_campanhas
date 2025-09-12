@@ -13,7 +13,7 @@ function Login({ onLoginSuccess }) {
     setErro("");
 
     try {
-      const resp = await fetch("/api/login", {
+      const resp = await fetch("https://gerador-presell-backend.vercel.app/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
