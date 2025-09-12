@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 import do React Router
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
-  const navigate = useNavigate(); // 👈 hook para redirecionar
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErro("");
 
     try {
-      const resp = await fetch("https://gerador-presell.vercel.app/login", {
+      const resp = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -21,11 +21,17 @@ function Login({ onLoginSuccess }) {
 
       const data = await resp.json();
 
+      
       if (resp.ok) {
         // Salvar token e role no localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
         localStorage.setItem("userId", data.id);
+
+        // Salvar projetos no localStorage ou passar para o pai
+        if (data.projects) {
+          localStorage.setItem("projects", JSON.stringify(data.projects));
+        }
 
         // Notificar componente pai
         onLoginSuccess(data);
@@ -40,8 +46,6 @@ function Login({ onLoginSuccess }) {
       console.error(err);
     }
   };
-
-
 
   return (
     <div className="login-container">
