@@ -7,8 +7,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:3001", // backend local
-        //target: "https://gerador-presell.vercel.app",
+        //target: "http://localhost:3001", // backend local
+        target: "https://gerador-presell.vercel.app",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

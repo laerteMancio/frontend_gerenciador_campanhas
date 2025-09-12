@@ -187,11 +187,7 @@ function PresellList() {
                       <FiEye
                         title="Visualizar"
                         onClick={() => window.open(`https://${subdomainUrl}`, "_blank")}
-                      />
-                      <FiEdit
-                        title="Editar"
-                        onClick={() => alert("Implementar edição")}
-                      />
+                      />                     
                       <FiTrash2
                         title="Excluir"
                         onClick={() => excluirProjeto(proj.id)}

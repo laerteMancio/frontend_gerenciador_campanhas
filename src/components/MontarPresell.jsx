@@ -207,7 +207,7 @@ ${presellCss}
           </div>
         ))}
         <button type="button" onClick={addBenefit}>Adicionar Benefício</button>
-
+        {/*
         <h3>FAQs</h3>
         {formData.faqs.map((faq,i)=>(
           <div key={i}>
@@ -217,7 +217,9 @@ ${presellCss}
           </div>
         ))}
         <button type="button" onClick={addFaq}>Adicionar FAQ</button>
+        */}
 
+        
         <div style={{marginTop:20}}>
           <button onClick={()=>{const blob=new Blob([buildFinalHtml()],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="index.html";a.click();}}>Gerar HTML</button>
           <button onClick={publicarPresell}>Publicar</button>
