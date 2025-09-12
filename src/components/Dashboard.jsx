@@ -7,18 +7,13 @@ import "./Dashboard.css";
 function Dashboard({ setTela, admin }) {
   const navigate = useNavigate();
 
-  const handleVisualizaPresell = () => {
-    navigate("/presell");
-  };
-
   const handleMontarPresell = () => {
     navigate("/montar-presell");
   };
 
   return (
     <div className="dashboard-container">
-      <div className="pages-section">
-        <button onClick={handleVisualizaPresell}>Visualiza Presell</button>
+      <div className="pages-section">        
         <button onClick={handleMontarPresell}>Montar Presell</button>
       </div>
 

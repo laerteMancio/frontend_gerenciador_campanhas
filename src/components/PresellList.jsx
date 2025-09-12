@@ -9,6 +9,7 @@ function PresellList() {
   const [erro, setErro] = useState("");
   const [verificando, setVerificando] = useState(false);
 
+
   useEffect(() => {
     if (!userId) return;
 
@@ -28,7 +29,7 @@ function PresellList() {
           data.map((p) => ({
             ...p,
             checked: false,
-            vercelMessage: "", // Inicialmente vazio
+            vercelMessage: "",
           }))
         );
       } catch (err) {
@@ -49,23 +50,33 @@ function PresellList() {
       .catch(() => alert("Falha ao copiar o link"));
   };
 
-  const excluirProjeto = async (id) => {
+  const excluirProjeto = async (idDoBanco) => {
     if (!window.confirm("Deseja realmente excluir este projeto?")) return;
 
     try {
-      const resp = await fetch(`/api/projects/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const resp = await fetch("/api/vercel/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ projetoId: idDoBanco, userId }),
       });
 
-      if (!resp.ok) throw new Error("Erro ao excluir projeto");
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || "Erro ao excluir projeto");
 
-      setProjects((prev) => prev.filter((p) => p.id !== id));
+      // Remove da lista no frontend
+      setProjects((prev) => prev.filter((p) => p.id !== idDoBanco));
+      alert("Projeto excluído com sucesso!");
     } catch (err) {
       console.error(err);
-      alert("Erro ao excluir o projeto");
+      alert("Erro ao excluir o projeto: " + err.message);
     }
   };
+
+
+
 
   // Verificação de subdomínios
   useEffect(() => {
@@ -101,14 +112,14 @@ function PresellList() {
             prev.map((p) =>
               p.id === proj.id
                 ? {
-                    ...p,
-                    status:
-                      data.status === "ativo" && !data.invalidConfiguration
-                        ? "ativo"
-                        : "pendente",
-                    vercelMessage: data.vercelMessage,
-                    checked: true,
-                  }
+                  ...p,
+                  status:
+                    data.status === "ativo" && !data.invalidConfiguration
+                      ? "ativo"
+                      : "pendente",
+                  vercelMessage: data.vercelMessage,
+                  checked: true,
+                }
                 : p
             )
           );
@@ -118,11 +129,11 @@ function PresellList() {
             prev.map((p) =>
               p.id === proj.id
                 ? {
-                    ...p,
-                    status: "pendente",
-                    checked: true,
-                    vercelMessage: "Erro ao verificar subdomínio ⚠️",
-                  }
+                  ...p,
+                  status: "pendente",
+                  checked: true,
+                  vercelMessage: "Erro ao verificar subdomínio ⚠️",
+                }
                 : p
             )
           );
@@ -175,9 +186,12 @@ function PresellList() {
                       />
                       <FiEye
                         title="Visualizar"
-                        onClick={() => window.open(subdomainUrl, "_blank")}
+                        onClick={() => window.open(`https://${subdomainUrl}`, "_blank")}
                       />
-                      <FiEdit title="Editar" onClick={() => alert("Implementar edição")} />
+                      <FiEdit
+                        title="Editar"
+                        onClick={() => alert("Implementar edição")}
+                      />
                       <FiTrash2
                         title="Excluir"
                         onClick={() => excluirProjeto(proj.id)}
