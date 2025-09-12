@@ -13,15 +13,17 @@ function Login({ onLoginSuccess }) {
     setErro("");
 
     try {
-      const resp = await fetch("https://gerador-presell-backend.vercel.app/login", {
+      const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
+        credentials: "include",
       });
+
 
       const data = await resp.json();
 
-      
+
       if (resp.ok) {
         // Salvar token e role no localStorage
         localStorage.setItem("token", data.token);
