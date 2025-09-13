@@ -9,13 +9,15 @@ function PresellList() {
   const [erro, setErro] = useState("");
   const [verificando, setVerificando] = useState(false);
 
+  const BASE_URL = "https://gerador-presell.vercel.app";
+
 
   useEffect(() => {
     if (!userId) return;
 
     const fetchProjects = async () => {
       try {
-        const resp = await fetch(`/api//projects/${userId}`, {
+        const resp = await fetch(`${BASE_URL}/projects/${userId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -97,7 +99,7 @@ function PresellList() {
         );
 
         try {
-          const resp = await fetch(`/api/check-subdomain`, {
+          const resp = await fetch(`${BASE_URL}/check-subdomain`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

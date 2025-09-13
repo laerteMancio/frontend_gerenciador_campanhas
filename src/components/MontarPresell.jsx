@@ -7,6 +7,8 @@ import presellCss from "./Presell.css?raw";
 const MontarPresell = ({ userId: propUserId }) => {
   const userId = propUserId || localStorage.getItem("userId");
 
+  const BASE_URL = "https://gerador-presell.vercel.app";
+
   const [formData, setFormData] = useState(() => {
     const saved = localStorage.getItem("montarPresellData");
     return saved
@@ -164,7 +166,7 @@ ${presellCss}
         cssFiles: [],
       };
 
-      const res = await fetch("/api/vercel/deploy", {
+      const res = await fetch(`${BASE_URL}/vercel/deploy`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
