@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
         mode === "development"
           ? {
               "/api": {
-                target: "http://localhost:3000", // seu backend local
+                target: "https://gerador-presell.vercel.app", 
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ""),
               },

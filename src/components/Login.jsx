@@ -8,14 +8,13 @@ function Login({ onLoginSuccess }) {
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
-  const BASE_URL = import.meta.env.VITE_API_URL;
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setErro("");
 
     try {
-      const resp = await fetch(`${BASE_URL}/login`, {
+      const resp = await fetch(`/api//login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),

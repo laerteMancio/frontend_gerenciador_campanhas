@@ -15,7 +15,7 @@ function PresellList() {
 
     const fetchProjects = async () => {
       try {
-        const resp = await fetch(`/api/projects/${userId}`, {
+        const resp = await fetch(`/api//projects/${userId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -97,7 +97,7 @@ function PresellList() {
         );
 
         try {
-          const resp = await fetch("/api/check-subdomain", {
+          const resp = await fetch(`/api/check-subdomain`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
