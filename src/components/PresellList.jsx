@@ -57,7 +57,7 @@ function PresellList() {
     if (!window.confirm("Deseja realmente excluir este projeto?")) return;
 
     try {
-      const resp = await fetch("/api/vercel/delete", {
+      const resp = await fetch(`${BASE_URL}/vercel/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
