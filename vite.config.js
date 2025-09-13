@@ -5,11 +5,13 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    proxy: {
+      "/api": {
+        //target: "http://localhost:3001", // backend local
+        target: "https://gerador-presell.vercel.app",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
   },
-  define: {
-    // Variável de ambiente para o backend Vercel
-    "process.env": {
-      VITE_BACKEND_URL: "https://gerador-presell.vercel.app"
-    }
-  }
 });
