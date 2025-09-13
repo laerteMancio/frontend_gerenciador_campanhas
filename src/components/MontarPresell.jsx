@@ -14,27 +14,27 @@ const MontarPresell = ({ userId: propUserId }) => {
     return saved
       ? JSON.parse(saved)
       : {
-          bannerUrl: "",
-          productUrl: "",
-          title: "Gluco6 - Suplemento Natural",
-          subtitle: "Suporte natural para níveis saudáveis de açúcar no sangue.",
-          heroCtaText: "Saiba Mais",
-          buyLink: "",
-          problemTitle: "Você busca equilíbrio em sua saúde?",
-          problems: ["Manter níveis saudáveis de açúcar no sangue é fundamental para o bem-estar geral."],
-          solutionTitle: "Uma Abordagem Natural",
-          solutionParagraphs: ["O Gluco6 é um suplemento natural desenvolvido para apoiar seu bem-estar."],
-          benefitsTitle: "Benefícios do Gluco6",
-          benefits: ["Ingredientes Naturais", "Suporte Diário", "Qualidade Confiável"],
-          socialTitle: "O que nossos clientes dizem",
-          testimonials: [{ text: "Excelente produto!", name: "Maria S." }],
-          finalCtaTitle: "Pronto para experimentar o Gluco6?",
-          finalCtaSubtitle: "Clique no botão abaixo para visitar o site oficial.",
-          finalCtaText: "Visitar Site Oficial",
-          promotion: "",
-          faqs: [],
-          domain: "",
-        };
+        bannerUrl: "",
+        productUrl: "",
+        title: "Gluco6 - Suplemento Natural",
+        subtitle: "Suporte natural para níveis saudáveis de açúcar no sangue.",
+        heroCtaText: "Saiba Mais",
+        buyLink: "",
+        problemTitle: "Você busca equilíbrio em sua saúde?",
+        problems: ["Manter níveis saudáveis de açúcar no sangue é fundamental para o bem-estar geral."],
+        solutionTitle: "Uma Abordagem Natural",
+        solutionParagraphs: ["O Gluco6 é um suplemento natural desenvolvido para apoiar seu bem-estar."],
+        benefitsTitle: "Benefícios do Gluco6",
+        benefits: ["Ingredientes Naturais", "Suporte Diário", "Qualidade Confiável"],
+        socialTitle: "O que nossos clientes dizem",
+        testimonials: [{ text: "Excelente produto!", name: "Maria S." }],
+        finalCtaTitle: "Pronto para experimentar o Gluco6?",
+        finalCtaSubtitle: "Clique no botão abaixo para visitar o site oficial.",
+        finalCtaText: "Visitar Site Oficial",
+        promotion: "",
+        faqs: [],
+        domain: "",
+      };
   });
 
   useEffect(() => {
@@ -160,11 +160,12 @@ ${presellCss}
 
       const payload = {
         userId,
-        nomeProduto: formData.title,
+        nomeProduto: formData.title.toLowerCase().replace(/[^a-z0-9-]/g, "-"), // minúsculo e caracteres válidos
         dominio: formData.domain,
         indexHtml: htmlContentFinal,
         cssFiles: [],
       };
+
 
       const res = await fetch(`${BASE_URL}/vercel/deploy`, {
         method: "POST",
@@ -190,7 +191,7 @@ ${presellCss}
     <div className="montar-presell">
       <div className="formulario">
         <h2>Editar Presell</h2>
-        {["bannerUrl","productUrl","title","subtitle","heroCtaText","buyLink","domain","problemTitle","solutionTitle","finalCtaTitle","finalCtaSubtitle","finalCtaText"].map(field => (
+        {["bannerUrl", "productUrl", "title", "subtitle", "heroCtaText", "buyLink", "domain", "problemTitle", "solutionTitle", "finalCtaTitle", "finalCtaSubtitle", "finalCtaText"].map(field => (
           <input
             key={field}
             type="text"
@@ -202,10 +203,10 @@ ${presellCss}
         ))}
 
         <h3>Benefícios</h3>
-        {formData.benefits.map((b,i) => (
+        {formData.benefits.map((b, i) => (
           <div key={i}>
-            <input value={b} onChange={(e)=>handleBenefitChange(i,e.target.value)} />
-            <button type="button" onClick={()=>removeBenefit(i)}>Remover</button>
+            <input value={b} onChange={(e) => handleBenefitChange(i, e.target.value)} />
+            <button type="button" onClick={() => removeBenefit(i)}>Remover</button>
           </div>
         ))}
         <button type="button" onClick={addBenefit}>Adicionar Benefício</button>
@@ -221,9 +222,9 @@ ${presellCss}
         <button type="button" onClick={addFaq}>Adicionar FAQ</button>
         */}
 
-        
-        <div style={{marginTop:20}}>
-          <button onClick={()=>{const blob=new Blob([buildFinalHtml()],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="index.html";a.click();}}>Gerar HTML</button>
+
+        <div style={{ marginTop: 20 }}>
+          <button onClick={() => { const blob = new Blob([buildFinalHtml()], { type: "text/html" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "index.html"; a.click(); }}>Gerar HTML</button>
           <button onClick={publicarPresell}>Publicar</button>
         </div>
       </div>
