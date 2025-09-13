@@ -26,7 +26,8 @@ function PresellList() {
 
         if (!resp.ok) throw new Error("Erro ao buscar projetos");
         const data = await resp.json();
-
+        console.log(data);
+        
         setProjects(
           data.map((p) => ({
             ...p,
@@ -82,6 +83,8 @@ function PresellList() {
 
   // Verificação de subdomínios
   useEffect(() => {
+    console.log(projects);
+    
     if (projects.length === 0 || verificando) return;
 
     const verificarSubdominios = async () => {
