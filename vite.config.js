@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         //target: "http://localhost:3001", // backend local
-        target: "https://gerador-presell.vercel.app",
+        target: "https://gerador-presell.vercel.app/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
