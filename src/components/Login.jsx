@@ -8,37 +8,29 @@ function Login({ onLoginSuccess }) {
   const [erro, setErro] = useState("");
   const navigate = useNavigate();
 
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErro("");
 
     try {
-      const resp = await fetch(`/api/login`, {
+      const resp = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
         credentials: "include",
       });
 
-
       const data = await resp.json();
 
-
       if (resp.ok) {
-        // Salvar token e role no localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
         localStorage.setItem("userId", data.id);
+        if (data.projects) localStorage.setItem("projects", JSON.stringify(data.projects));
 
-        // Salvar projetos no localStorage ou passar para o pai
-        if (data.projects) {
-          localStorage.setItem("projects", JSON.stringify(data.projects));
-        }
-
-        // Notificar componente pai
         onLoginSuccess(data);
-
-        // Redirecionar para dashboard
         navigate("/dashboard");
       } else {
         setErro(data.message || "Credenciais inválidas");
