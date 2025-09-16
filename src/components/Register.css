@@ -1,61 +1,112 @@
-.erro {
-  color: #d93025;
-  margin-bottom: 15px;
-  text-align: center;
-}
+/* Register.css - Estilos consistentes com o Login */
 
-.sucesso {
-  color: #34a853;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 30px;
-  background: #fff;
+.register-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.5s ease-out; /* Reutilizando a animação de fade */
 }
 
-form {
+.register-container h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.register-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 32px;
+}
+
+.register-container form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
+/* Grupo de Input (Label + Input) */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-input {
-  padding: 10px 12px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+.input-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-input:focus {
-  border-color: #4a90e2;
+.input-group input:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+  border-color: #2563eb; /* Cor primária */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
-button {
+/* Mensagens de Feedback */
+.feedback-message {
+  text-align: center;
+  font-weight: 500;
   padding: 12px;
-  background: #4a90e2;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
+  border-radius: 8px;
+  font-size: 0.9rem;
 }
 
-button:hover {
-  background: #357abd;
+.feedback-message.error {
+  background-color: #fef2f2;
+  color: #ef4444;
+}
+
+.feedback-message.success {
+  background-color: #f0fdf4;
+  color: #22c55e;
+}
+
+/* Botão de Submit */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #6a11cb, #2575fc); /* Gradiente do Login */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(37, 117, 252, 0.3);
+}
+
+/* Animação de Fade-in (se não estiver em um CSS global) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

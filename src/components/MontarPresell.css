@@ -1,58 +1,184 @@
+/* MontarPresell.css - Refatoração Visual sem alterar o JSX */
+
+/* --- ESTRUTURA PRINCIPAL --- */
 .montar-presell {
   display: flex;
-  gap: 40px;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  height: 100vh;
+  background-color: #f9fafb;
+  font-family: "Inter", sans-serif;
+  /* Removido gap e padding para controle total dos filhos */
 }
 
-/* Formulário */
+/* --- PAINEL DE EDIÇÃO (FORMULÁRIO) --- */
 .formulario {
-  flex: 1;
+  width: 450px; /* Largura fixa para o painel de edição */
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 24px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 24px; /* Espaçamento principal entre seções */
 }
 
-.formulario h2,
+/* --- ESTILIZAÇÃO DAS SEÇÕES E CAMPOS --- */
+
+/* Título principal do formulário */
+.formulario h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Títulos de seção (Benefícios, FAQs) */
 .formulario h3 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 16px 0 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
 }
 
-.formulario input {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1em;
+/* Estilização de todos os inputs de texto */
+.formulario input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 0.95em;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-/* Inputs de FAQ agrupados */
-.faq-input {
+.formulario input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* Estilização da lista dinâmica de benefícios */
+.formulario h3 + div, .formulario h3 + div + button {
+  margin-top: 8px;
+}
+
+.formulario div > input[value] + button { /* Botão "Remover" */
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+.formulario div > input[value] + button:hover {
+  background: #fce8e8;
+  color: #ef4444;
+}
+
+/* Botão "Adicionar Benefício" */
+.formulario button[type="button"] {
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  color: #4b5563;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  width: 100%;
+}
+.formulario button[type="button"]:hover {
+  background: #f3f4f6;
+  border-color: #a5b4fc;
+}
+
+/* --- BOTÕES DE AÇÃO PRINCIPAIS (GERAR/PUBLICAR) --- */
+.formulario > div:last-child {
+  margin-top: auto; /* Empurra os botões para o final do painel */
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  margin-bottom: 10px;
+  gap: 12px;
 }
 
-/* Preview */
-.preview {
+.formulario > div:last-child button {
   flex: 1;
-  max-width: 900px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
 }
 
-.preview h2 {
-  margin-bottom: 10px;
-  color: #333;
+/* Botão "Gerar HTML" (secundário) */
+.formulario > div:last-child button:first-child {
+  background: #fff;
+  color: #374151;
+  border-color: #d1d5db;
+}
+.formulario > div:last-child button:first-child:hover {
+  background: #f9fafb;
 }
 
-/* Responsivo */
-@media (max-width: 900px) {
+/* Botão "Publicar" (primário) */
+.formulario > div:last-child button:last-child {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+.formulario > div:last-child button:last-child:hover {
+  background: #1d4ed8;
+}
+
+/* --- PAINEL DE PREVIEW --- */
+.preview {
+  flex-grow: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: #f9fafb;
+}
+
+/* Contêiner interno do preview para simular a página */
+#preview-root {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  height: 100%;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 1024px) {
   .montar-presell {
     flex-direction: column;
+    height: auto; /* Permite que a página cresça */
   }
-
+  .formulario {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e7eb;
+    height: auto; /* Altura automática */
+    max-height: 50vh; /* Limita a altura em telas de tablet */
+  }
   .preview {
-    max-width: 100%;
+    height: auto;
+    min-height: 50vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .formulario, .preview {
+    padding: 16px;
+  }
+  .formulario {
+    max-height: none; /* Remove a limitação de altura em celulares */
   }
 }

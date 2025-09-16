@@ -14,17 +14,14 @@ html, body, #root {
   background-color: #f5f5f5; /* fundo neutro */
 }
 
-/* Container principal de cada tela */
+/* --- MUDANÇA PRINCIPAL --- */
+/* Container principal agora é um wrapper simples, sem layout próprio */
 .app-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;     /* centraliza horizontalmente */
-  justify-content: center; /* centraliza verticalmente */
-  min-height: 100vh;
-  padding: 20px;
+  height: 100%;
+  width: 100%;
 }
 
-/* Botões globais */
+/* Botões globais (mantidos) */
 button {
   padding: 10px 20px;
   background-color: #1976d2;
@@ -40,7 +37,7 @@ button:hover {
   background-color: #1565c0;
 }
 
-/* Seções dentro das telas */
+/* Seções dentro das telas (mantidas) */
 .pages-section {
   display: flex;
   justify-content: center;
@@ -51,7 +48,7 @@ button:hover {
   gap: 15px;
 }
 
-/* BackButton */
+/* BackButton (mantido) */
 .back-button {
   position: fixed;
   top: 20px;

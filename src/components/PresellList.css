@@ -1,183 +1,113 @@
-/* Reset básico */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 .presell-list {
-  width: 80%;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .presell-list h2 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
   margin-bottom: 20px;
-  color: #333;
-  text-align: center;
 }
 
-.presell-list p {
-  text-align: center;
-  color: #555;
-  margin-top: 20px;
-}
-
-.erro {
-  color: #d9534f;
-  font-weight: bold;
-}
-
-/* Tabela */
-.presell-list table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.presell-list th,
-.presell-list td {
-  padding: 12px 15px;
-  text-align: left;
-}
-
-.presell-list thead {
-  background-color: #007bff;
-  color: white;
-}
-
-.presell-list tbody tr {
-  border-bottom: 1px solid #ddd;
-}
-
-.presell-list tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-.presell-list tbody tr:hover {
-  background-color: #e9f0ff;
-}
-
-/* Links */
-.presell-list a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.presell-list a:hover {
-  text-decoration: underline;
-}
-
-/* Botões */
-.presell-list button {
-  margin-right: 5px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.presell-list button:hover {
-  opacity: 0.85;
-}
-
-.presell-list button:nth-child(1) {
-  background-color: #17a2b8;
-  color: white;
-}
-
-.presell-list button:nth-child(2) {
-  background-color: #28a745;
-  color: white;
-}
-
-.presell-list button:nth-child(3) {
-  background-color: #ffc107;
-  color: white;
-}
-
-.presell-list button:nth-child(4) {
-  background-color: #dc3545;
-  color: white;
-}
-
-.acoes-icons {
+/* Cabeçalho desktop */
+.projects-header {
   display: flex;
-  gap: 10px; /* espaçamento entre os ícones */
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 15px;
+  font-weight: 600;
+  border-radius: 8px 8px 0 0;
+}
+
+.header-item {
+  flex: 1;
+  text-align: left;
+  font-size: 0.55rem;
+}
+
+/* Lista de registros */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-row {
+  display: flex;
   align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.acoes-icons svg {
+.project-row:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.project-item {
+  flex: 1;
+  padding: 0 8px;
+  font-size: 0.7rem;
+  word-break: break-word;
+}
+
+.project-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.project-actions svg {
   cursor: pointer;
-  font-size: 18px; /* tamanho do ícone */
-  color: #555;
-  transition: all 0.2s ease;
+  font-size: 18px;
+  color: #6b7280;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.acoes-icons svg:hover {
-  color: #007bff; /* muda a cor ao passar o mouse */
+.project-actions svg:hover {
+  color: #2563eb;
+  transform: scale(1.1);
 }
 
-
-/* Responsividade */
-@media screen and (max-width: 768px) {
-  .presell-list table,
-  .presell-list thead,
-  .presell-list tbody,
-  .presell-list th,
-  .presell-list td,
-  .presell-list tr {
-    display: block;
-  }
-
-  .presell-list thead {
+/* Mobile: cada registro vira card vertical */
+@media (max-width: 768px) {
+  .projects-header {
     display: none;
   }
 
-  .presell-list tbody tr {
-    margin-bottom: 15px;
+  .project-row {
+    flex-direction: column;
+    align-items: flex-start;
     padding: 15px;
     border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+    background-color: #f9fafb;
   }
 
-  .presell-list td {
+  .project-item {
+    width: 100%;
+    margin-bottom: 6px;
+    min-height: 24px; /* altura mínima padrão */
     display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-  }
-
-  .presell-list td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: #333;
-  }
-
-  .presell-list button {
-    margin: 5px 2px 0 0;
-  }
-
-  .acoes-icons {
-    display: flex;
-    gap: 10px; /* espaço entre os ícones */
     align-items: center;
   }
 
-  .acoes-icons svg {
-    cursor: pointer;
-    font-size: 18px;
-    color: #555;
-    transition: all 0.2s;
+  .project-item::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #374151;
+    display: inline-block;
+    margin-right: 6px;
+    min-width: 120px; /* mantém o label consistente */
   }
 
-  .acoes-icons svg:hover {
-    color: #007bff; /* muda de cor ao passar o mouse */
+  .project-actions {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    gap: 12px;
   }
 }

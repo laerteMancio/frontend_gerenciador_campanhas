@@ -1,0 +1,23 @@
+/* src/layouts/AuthLayout.css */
+
+.auth-layout-wrapper {
+  display: flex; /* Alterado para flex para melhor controle de alinhamento */
+  flex-direction: column;
+  justify-content: center; /* Centraliza verticalmente */
+  align-items: center;     /* Centraliza horizontalmente */
+  
+  width: 100%;
+  min-height: 100vh; /* A MUDANÇA MAIS IMPORTANTE: permite que a página role */
+  
+  background-color: #f0f2f5;
+  padding: 40px 20px; /* Adiciona mais espaçamento vertical em telas grandes */
+  box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+  .auth-layout-wrapper {
+    padding: 20px 15px;
+    justify-content: flex-start; /* Alinha ao topo em celulares para melhor uso do espaço com teclado */
+  }
+}

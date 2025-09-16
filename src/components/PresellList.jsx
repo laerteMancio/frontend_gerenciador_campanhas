@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiCopy, FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiCopy, FiEye, FiTrash2 } from "react-icons/fi";
 import "./PresellList.css";
 
 function PresellList() {
@@ -10,7 +10,6 @@ function PresellList() {
   const [verificando, setVerificando] = useState(false);
 
   const BASE_URL = "https://gerador-presell.vercel.app";
-
 
   useEffect(() => {
     if (!userId) return;
@@ -26,8 +25,7 @@ function PresellList() {
 
         if (!resp.ok) throw new Error("Erro ao buscar projetos");
         const data = await resp.json();
-        console.log(data);
-        
+
         setProjects(
           data.map((p) => ({
             ...p,
@@ -69,7 +67,6 @@ function PresellList() {
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || "Erro ao excluir projeto");
 
-      // Remove da lista no frontend
       setProjects((prev) => prev.filter((p) => p.id !== idDoBanco));
       alert("Projeto excluído com sucesso!");
     } catch (err) {
@@ -78,13 +75,8 @@ function PresellList() {
     }
   };
 
-
-
-
   // Verificação de subdomínios
   useEffect(() => {
-    console.log(projects);
-    
     if (projects.length === 0 || verificando) return;
 
     const verificarSubdominios = async () => {
@@ -117,14 +109,14 @@ function PresellList() {
             prev.map((p) =>
               p.id === proj.id
                 ? {
-                  ...p,
-                  status:
-                    data.status === "ativo" && !data.invalidConfiguration
-                      ? "ativo"
-                      : "pendente",
-                  vercelMessage: data.vercelMessage,
-                  checked: true,
-                }
+                    ...p,
+                    status:
+                      data.status === "ativo" && !data.invalidConfiguration
+                        ? "ativo"
+                        : "pendente",
+                    vercelMessage: data.vercelMessage,
+                    checked: true,
+                  }
                 : p
             )
           );
@@ -134,11 +126,11 @@ function PresellList() {
             prev.map((p) =>
               p.id === proj.id
                 ? {
-                  ...p,
-                  status: "pendente",
-                  checked: true,
-                  vercelMessage: "Erro ao verificar subdomínio ⚠️",
-                }
+                    ...p,
+                    status: "pendente",
+                    checked: true,
+                    vercelMessage: "Erro ao verificar subdomínio ⚠️",
+                  }
                 : p
             )
           );
@@ -154,56 +146,61 @@ function PresellList() {
   if (loading) return <p>Carregando...</p>;
   if (erro) return <p className="erro">{erro}</p>;
 
+  const columns = [
+    "Data de criação",
+    "Nome do produto",
+    "Domínio",
+    "Subdomínio",
+    "Status",
+    "Ações",
+  ];
+
   return (
     <div className="presell-list">
       <h2>Meus Projetos</h2>
       {projects.length === 0 ? (
         <p>Nenhum projeto criado ainda.</p>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Data de criação</th>
-              <th>Nome do produto</th>
-              <th>Domínio</th>
-              <th>Subdomínio</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
+        <>
+          {/* Cabeçalho desktop */}
+          <div className="projects-header">
+            {columns.map((col, index) => (
+              <div className="header-item" key={index}>
+                {col}
+              </div>
+            ))}
+          </div>
+
+          <div className="projects-list">
             {projects.map((proj, index) => {
               const subdomainUrl = proj.subdominio || proj.url;
               return (
-                <tr key={`${proj.id}-${index}`}>
-                  <td data-label="Criado em">
+                <div className="project-row" key={`${proj.id}-${index}`}>
+                  <div className="project-item" data-label="Data de criação">
                     {new Date(proj.created_at).toLocaleString("pt-BR")}
-                  </td>
-                  <td data-label="Nome do Produto">{proj.nome_produto}</td>
-                  <td data-label="Domínio">{proj.dominio}</td>
-                  <td data-label="Subdomínio">{proj.subdominio || "pendente"}</td>
-                  <td data-label="Status">{proj.vercelMessage || "Pendente"}</td>
-                  <td data-label="Ações">
-                    <div className="acoes-icons">
-                      <FiCopy
-                        title="Copiar"
-                        onClick={() => copiarLink(subdomainUrl)}
-                      />
-                      <FiEye
-                        title="Visualizar"
-                        onClick={() => window.open(`https://${subdomainUrl}`, "_blank")}
-                      />                     
-                      <FiTrash2
-                        title="Excluir"
-                        onClick={() => excluirProjeto(proj.id)}
-                      />
-                    </div>
-                  </td>
-                </tr>
+                  </div>
+                  <div className="project-item" data-label="Nome do produto">
+                    {proj.nome_produto}
+                  </div>
+                  <div className="project-item" data-label="Domínio" title={proj.dominio}>
+                    {proj.dominio}
+                  </div>
+                  <div className="project-item" data-label="Subdomínio" title={proj.subdominio}>
+                    {proj.subdominio || "pendente"}
+                  </div>
+                  <div className="project-item" data-label="Status" title={proj.vercelMessage || "Pendente"}>
+                    {proj.vercelMessage || "Pendente"}
+                  </div>
+                  <div className="project-actions" data-label="Ações">
+                    <FiCopy title="Copiar" onClick={() => copiarLink(subdomainUrl)} />
+                    <FiEye title="Visualizar" onClick={() => window.open(`https://${subdomainUrl}`, "_blank")} />
+                    <FiTrash2 title="Excluir" onClick={() => excluirProjeto(proj.id)} />
+                  </div>
+                </div>
               );
             })}
-          </tbody>
-        </table>
+          </div>
+        </>
       )}
     </div>
   );

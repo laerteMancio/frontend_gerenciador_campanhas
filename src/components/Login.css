@@ -1,61 +1,150 @@
-.login-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 30px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  font-family: Arial, sans-serif;
-}
+/* Login.css - Focado apenas no estilo do componente */
 
-h2 {
-  text-align: center;
-  color: #333;
-  margin-bottom: 25px;
-}
-
-form {
+.login-wrapper {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  max-width: 900px; /* Largura máxima para o layout desktop */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
 }
 
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
+/* Lado do Formulário */
+.login-form-side {
+  width: 100%;
+  padding: 40px;
 }
 
-input {
-  padding: 10px 12px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  transition: all 0.2s ease;
+/* Lado da Imagem (inicia oculto) */
+.login-image-side {
+  display: none;
 }
 
-input:focus {
-  border-color: #4a90e2;
-  outline: none;
-  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
-}
-
-button {
-  padding: 12px;
-  background: #4a90e2;
-  color: #fff;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #357abd;
-}
-
-.erro {
-  color: #d93025;
-  margin-bottom: 15px;
+/* O resto do seu CSS para inputs, botões, etc., permanece o mesmo */
+.login-container h2 {
   text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+  font-size: 2rem;
+}
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+.input-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.input-group input:focus {
+  outline: none;
+  border-color: #6a11cb;
+  box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+}
+.validation-error {
+  color: #d32f2f;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-wrapper input {
+  padding-right: 40px;
+}
+.password-toggle-icon {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  color: #888;
+  display: flex;
+  align-items: center;
+}
+.options-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+.remember-me {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+.remember-me input[type="checkbox"] {
+  margin-right: 8px;
+}
+.forgot-password {
+  color: #6a11cb;
+  text-decoration: none;
+  font-weight: 600;
+}
+button[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+button[type="submit"]:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.erro {
+  color: #d32f2f;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* Media Query para reativar o layout de duas colunas em telas maiores */
+@media (min-width: 768px) {
+
+  .login-image-side {
+    display: flex;
+    width: 50%;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+  }
+  .login-form-side {
+    width: 50%;
+  }
+}
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
