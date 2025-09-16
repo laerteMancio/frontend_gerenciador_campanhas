@@ -34,7 +34,7 @@ function PresellList() {
   const [erro, setErro] = useState("");
   const BASE_URL = "https://gerador-presell.vercel.app";
 
-  const verificarTodosOsSubdominios = useCallback(async (projetosParaVerificar ) => {
+  const verificarTodosOsSubdominios = useCallback(async (projetosParaVerificar) => {
     for (const proj of projetosParaVerificar) {
       if (!proj.dominio || !proj.subdominio || !proj.projeto_vercel) {
         setProjects(prev => prev.map(p => p.id === proj.id ? { ...p, checked: true, vercelMessage: "Dados insuficientes" } : p));
@@ -107,39 +107,57 @@ function PresellList() {
   if (loading) return <div className="list-feedback"><FiLoader className="spinner" /> Carregando projetos...</div>;
   if (erro) return <div className="list-feedback error"><FiAlertTriangle /> {erro}</div>;
 
+  // Dentro do return do PresellList
   return (
     <div className="presell-list-wrapper">
       {projects.length === 0 ? (
         <div className="list-feedback">Nenhum projeto criado ainda.</div>
       ) : (
-        <div className="projects-grid">
+        <div className="project-table">
+          {/* Cabeçalho */}
+          <div className="project-row header">
+            <div className="project-cell">Produto</div>
+            <div className="project-cell">Subdomínio</div>
+            <div className="project-cell">Data de Criação</div>
+            <div className="project-cell">Status</div>
+            <div className="project-cell actions">Ações</div>
+          </div>
+
+          {/* Linhas */}
           {projects.map((proj) => {
             const subdomainUrl = proj.subdominio || proj.url;
             const fullUrl = `https://${subdomainUrl}`;
             return (
-              <div className="project-card" key={proj.id}>
-                <div className="card-header">
-                  <h3 className="card-title">{proj.nome_produto}</h3>
+              <div className="project-row" key={proj.id}>
+                <div className="project-cell" data-label="Produto">
+                  <span className="cell-main-text">{proj.nome_produto}</span>
+                  <span className="cell-sub-text">{proj.dominio || "N/A"}</span>
+                </div>
+
+                <div className="project-cell" data-label="Subdomínio">
+                  <a href={fullUrl} target="_blank" rel="noopener noreferrer">
+                    {subdomainUrl}
+                  </a>
+                </div>
+
+                <div className="project-cell" data-label="Data de Criação">
+                  {new Date(proj.created_at).toLocaleDateString("pt-BR")}
+                </div>
+
+                <div className="project-cell" data-label="Status">
                   <StatusBadge status={proj.status} message={proj.vercelMessage} />
                 </div>
-                <div className="card-body">
-                  <div className="info-group">
-                    <label>Link da Presell</label>
-                    <a href={fullUrl} target="_blank" rel="noopener noreferrer">{subdomainUrl}</a>
-                  </div>
-                  <div className="info-group">
-                    <label>Domínio Principal</label>
-                    <span>{proj.dominio || "N/A"}</span>
-                  </div>
-                  <div className="info-group">
-                    <label>Data de Criação</label>
-                    <span>{new Date(proj.created_at ).toLocaleDateString("pt-BR")}</span>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <button className="action-btn" onClick={() => copiarLink(fullUrl)}><FiCopy /> Copiar</button>
-                  <button className="action-btn" onClick={() => window.open(fullUrl, "_blank")}><FiEye /> Ver</button>
-                  <button className="action-btn danger" onClick={() => excluirProjeto(proj.id)}><FiTrash2 /> Excluir</button>
+
+                <div className="project-cell actions" data-label="Ações">
+                  <button className="action-btn" onClick={() => copiarLink(fullUrl)}>
+                    <FiCopy />
+                  </button>
+                  <button className="action-btn" onClick={() => window.open(fullUrl, "_blank")}>
+                    <FiEye />
+                  </button>
+                  <button className="action-btn danger" onClick={() => excluirProjeto(proj.id)}>
+                    <FiTrash2 />
+                  </button>
                 </div>
               </div>
             );
@@ -148,6 +166,7 @@ function PresellList() {
       )}
     </div>
   );
+
 }
 
 export default PresellList;

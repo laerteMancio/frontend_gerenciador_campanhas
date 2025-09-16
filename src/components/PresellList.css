@@ -1,10 +1,15 @@
-/* PresellList.css - Layout de Cards Moderno */
+/* PresellList.css - Layout de Lista Responsiva */
 
 .presell-list-wrapper {
   width: 100%;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Mensagens de feedback (Carregando, Erro, Vazio) */
+/* Feedback (Carregando, Erro, Vazio) */
 .list-feedback {
   display: flex;
   align-items: center;
@@ -14,137 +19,147 @@
   color: #6b7280;
   gap: 12px;
 }
-.list-feedback.error {
-  color: #ef4444;
+.list-feedback.error { color: #ef4444; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 1s linear infinite; }
+
+/* Estrutura da Tabela/Lista */
+.project-table {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Animação de Spinner */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-.spinner {
-  animation: spin 1s linear infinite;
-}
-
-/* Grid de Projetos */
-.projects-grid {
+.project-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-/* Card de Projeto Individual */
-.project-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  transition: all 0.2s ease-in-out;
-}
-.project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
-}
-
-/* Cabeçalho do Card */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-  word-break: break-word;
-}
-
-/* Badge de Status */
-.status-badge {
-  display: flex;
+  /* Define as colunas: Produto (2x), Subdomínio (2x), Data (1x), Status (1.5x), Ações (1x) */
+  grid-template-columns: 2fr 2fr 1fr 1.5fr 1fr;
   align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 20px;
-  flex-shrink: 0;
-  margin-left: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
 }
-.status-badge.pending { background-color: #fef9c3; color: #ca8a04; }
-.status-badge.active { background-color: #dcfce7; color: #16a34a; }
-.status-badge.error { background-color: #fee2e2; color: #dc2626; }
-
-/* Corpo do Card */
-.card-body {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex-grow: 1;
+.project-row:last-child {
+  border-bottom: none;
+}
+.project-row:not(.header):hover {
+  background-color: #f9fafb;
 }
 
-.info-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.info-group label {
+/* Cabeçalho da Tabela */
+.project-row.header {
+  background-color: #f9fafb;
   font-size: 0.75rem;
+  font-weight: 600;
   color: #6b7280;
-  font-weight: 500;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.info-group span, .info-group a {
+/* Células da Tabela */
+.project-cell {
+  padding: 16px 20px;
   font-size: 0.9rem;
   color: #374151;
-  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.info-group a {
+
+.cell-main-text {
+  display: block;
+  font-weight: 500;
+  color: #111827;
+}
+.cell-sub-text {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.project-cell a {
   color: #2563eb;
   text-decoration: none;
   font-weight: 500;
 }
-.info-group a:hover { text-decoration: underline; }
+.project-cell a:hover { text-decoration: underline; }
 
-/* Rodapé do Card com Ações */
-.card-footer {
+/* Célula de Ações */
+.project-cell.actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  padding: 12px 20px;
-  border-top: 1px solid #f3f4f6;
-  background-color: #f9fafb;
 }
 
 .action-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: #fff;
-  border: 1px solid #d1d5db;
-  color: #374151;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
+  justify-content: center;
   transition: all 0.2s ease;
 }
-.action-btn:hover {
-  background-color: #f3f4f6;
-  border-color: #9ca3af;
-}
-.action-btn.danger:hover {
-  background-color: #fee2e2;
-  border-color: #fca5a5;
-  color: #b91c1c;
+.action-btn:hover { background-color: #e5e7eb; color: #111827; }
+.action-btn.danger:hover { background-color: #fee2e2; color: #b91c1c; }
+
+/* Badge de Status (sem alterações, apenas para contexto) */
+.status-badge { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 500; padding: 4px 8px; border-radius: 20px; flex-shrink: 0; }
+.status-badge.pending { background-color: #fef9c3; color: #ca8a04; }
+.status-badge.active { background-color: #dcfce7; color: #16a34a; }
+.status-badge.error { background-color: #fee2e2; color: #dc2626; }
+
+/* --- RESPONSIVIDADE PARA MOBILE --- */
+@media (max-width: 768px) {
+  /* Esconde o cabeçalho da tabela */
+  .project-row.header {
+    display: none;
+  }
+
+  /* Transforma cada linha em um "mini-card" */
+  .project-row {
+    grid-template-columns: 1fr; /* Uma única coluna */
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .project-cell {
+    display: flex;
+    justify-content: space-between; /* Alinha label e valor */
+    align-items: center;
+    padding: 0;
+    white-space: normal;
+  }
+
+  /* Adiciona a label antes do conteúdo da célula */
+  .project-cell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #6b7280;
+    margin-right: 16px;
+  }
+
+  /* Ajustes específicos para mobile */
+  .project-cell[data-label="Produto"] {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .project-cell[data-label="Produto"]::before {
+    display: none; /* Não precisa de label para o item principal */
+  }
+  .cell-main-text { font-size: 1.1rem; }
+
+  .project-cell.actions {
+    justify-content: center; /* Centraliza os botões */
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+  }
+  .project-cell.actions::before {
+    display: none; /* Não precisa de label para ações */
+  }
+  .action-btn { font-size: 1.1rem; padding: 8px; }
 }
