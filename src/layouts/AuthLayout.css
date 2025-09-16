@@ -1,23 +1,31 @@
-/* src/layouts/AuthLayout.css */
+/* src/layouts/AuthLayout.css - Versão Final com Grid e Media Query Corrigida */
 
 .auth-layout-wrapper {
-  display: flex; /* Alterado para flex para melhor controle de alinhamento */
-  flex-direction: column;
-  justify-content: center; /* Centraliza verticalmente */
-  align-items: center;     /* Centraliza horizontalmente */
+  display: grid;
+  /* Centraliza perfeitamente em telas de desktop */
+  place-items: center; 
   
   width: 100%;
-  min-height: 100vh; /* A MUDANÇA MAIS IMPORTANTE: permite que a página role */
+  height: 100vh;
   
   background-color: #f0f2f5;
-  padding: 40px 20px; /* Adiciona mais espaçamento vertical em telas grandes */
-  box-sizing: border-box; /* Garante que o padding não aumente o tamanho total */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela */
 }
 
 /* Responsividade para telas menores */
 @media (max-width: 600px) {
   .auth-layout-wrapper {
+    /* --- CORREÇÃO --- */
+    /* 'align-items' controla o alinhamento vertical em um contêiner grid. */
+    /* 'start' alinha o item no início (topo). */
+    align-items: center;
+
+    /* 'justify-items' controla o alinhamento horizontal. 'center' o mantém no meio. */
+    justify-items: center;
+
+    /* O padding pode ser ajustado para telas pequenas */
     padding: 20px 15px;
-    justify-content: flex-start; /* Alinha ao topo em celulares para melhor uso do espaço com teclado */
   }
 }

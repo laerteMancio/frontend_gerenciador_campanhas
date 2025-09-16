@@ -1,113 +1,150 @@
-.presell-list {
+/* PresellList.css - Layout de Cards Moderno */
+
+.presell-list-wrapper {
   width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 25px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.presell-list h2 {
-  text-align: center;
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 20px;
-}
-
-/* Cabeçalho desktop */
-.projects-header {
-  display: flex;
-  background-color: #2563eb;
-  color: white;
-  padding: 10px 15px;
-  font-weight: 600;
-  border-radius: 8px 8px 0 0;
-}
-
-.header-item {
-  flex: 1;
-  text-align: left;
-  font-size: 0.55rem;
-}
-
-/* Lista de registros */
-.projects-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-row {
+/* Mensagens de feedback (Carregando, Erro, Vazio) */
+.list-feedback {
   display: flex;
   align-items: center;
-  padding: 12px 15px;
-  border-bottom: 1px solid #e5e7eb;
+  justify-content: center;
+  padding: 40px 20px;
+  font-size: 1.1rem;
+  color: #6b7280;
+  gap: 12px;
+}
+.list-feedback.error {
+  color: #ef4444;
 }
 
-.project-row:nth-child(even) {
-  background-color: #f9fafb;
+/* Animação de Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  animation: spin 1s linear infinite;
 }
 
-.project-item {
-  flex: 1;
-  padding: 0 8px;
-  font-size: 0.7rem;
+/* Grid de Projetos */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* Card de Projeto Individual */
+.project-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease-in-out;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+}
+
+/* Cabeçalho do Card */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
   word-break: break-word;
 }
 
-.project-actions {
+/* Badge de Status */
+.status-badge {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+.status-badge.pending { background-color: #fef9c3; color: #ca8a04; }
+.status-badge.active { background-color: #dcfce7; color: #16a34a; }
+.status-badge.error { background-color: #fee2e2; color: #dc2626; }
+
+/* Corpo do Card */
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
 }
 
-.project-actions svg {
-  cursor: pointer;
-  font-size: 18px;
+.info-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-group label {
+  font-size: 0.75rem;
   color: #6b7280;
-  transition: transform 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
-.project-actions svg:hover {
+.info-group span, .info-group a {
+  font-size: 0.9rem;
+  color: #374151;
+  word-break: break-all;
+}
+.info-group a {
   color: #2563eb;
-  transform: scale(1.1);
+  text-decoration: none;
+  font-weight: 500;
+}
+.info-group a:hover { text-decoration: underline; }
+
+/* Rodapé do Card com Ações */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid #f3f4f6;
+  background-color: #f9fafb;
 }
 
-/* Mobile: cada registro vira card vertical */
-@media (max-width: 768px) {
-  .projects-header {
-    display: none;
-  }
-
-  .project-row {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    background-color: #f9fafb;
-  }
-
-  .project-item {
-    width: 100%;
-    margin-bottom: 6px;
-    min-height: 24px; /* altura mínima padrão */
-    display: flex;
-    align-items: center;
-  }
-
-  .project-item::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #374151;
-    display: inline-block;
-    margin-right: 6px;
-    min-width: 120px; /* mantém o label consistente */
-  }
-
-  .project-actions {
-    margin-top: 10px;
-    width: 100%;
-    display: flex;
-    gap: 12px;
-  }
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.action-btn:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+.action-btn.danger:hover {
+  background-color: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
 }

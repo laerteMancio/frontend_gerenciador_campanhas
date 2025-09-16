@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import Presell from "./Presell";
 import "./MontarPresell.css";
+
+// --- CORREÇÃO: RESTAURANDO AS IMPORTAÇÕES ESSENCIAIS ---
 import cssContent from "./MontarPresell.css?raw";
 import presellCss from "./Presell.css?raw";
 
-const MontarPresell = ({ userId: propUserId }) => {
-  const userId = propUserId || localStorage.getItem("userId");
+const MontarPresell = () => {
+  const { usuario } = useOutletContext();
+  const userId = usuario?.id || localStorage.getItem("userId");
 
   const BASE_URL = "https://gerador-presell.vercel.app";
 
-  const [formData, setFormData] = useState(() => {
+  // --- NENHUMA MUDANÇA NA LÓGICA DE ESTADO E HANDLERS ---
+  const [formData, setFormData] = useState(( ) => {
     const saved = localStorage.getItem("montarPresellData");
     return saved
       ? JSON.parse(saved)
@@ -41,7 +46,6 @@ const MontarPresell = ({ userId: propUserId }) => {
     localStorage.setItem("montarPresellData", JSON.stringify(formData));
   }, [formData]);
 
-  // --- Handlers ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -73,7 +77,7 @@ const MontarPresell = ({ userId: propUserId }) => {
     setFormData((prev) => ({ ...prev, faqs: newFaqs }));
   };
 
-  // --- Gerar HTML ---
+  // --- SUA LÓGICA ORIGINAL E FUNCIONAL DE GERAR HTML ---
   const buildFinalHtml = () => {
     return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -109,7 +113,7 @@ ${presellCss}
       <div class="content-grid">
         <div class="text-content">
           <h2>${formData.problemTitle}</h2>
-          ${formData.problems.map((p) => `<p>${p}</p>`).join("")}
+          ${formData.problems.map((p ) => `<p>${p}</p>`).join("")}
           <h3>${formData.solutionTitle}</h3>
           ${formData.solutionParagraphs.map((p) => `<p>${p}</p>`).join("")}
         </div>
@@ -148,34 +152,23 @@ ${presellCss}
 </html>`;
   };
 
-  // --- Publicar no backend ---
+  // --- SUA LÓGICA ORIGINAL E FUNCIONAL DE PUBLICAR ---
   const publicarPresell = async () => {
     if (!formData.title || !formData.domain) {
       alert("Preencha o nome do produto e o domínio antes de publicar.");
       return;
     }
-
     try {
       const htmlContentFinal = buildFinalHtml();
-
-      const payload = {
-        userId,
-        nomeProduto: formData.title,
-        dominio: formData.domain,
-        indexHtml: htmlContentFinal,
-        cssFiles: [],
-      };
-
+      const payload = { userId, nomeProduto: formData.title, dominio: formData.domain, indexHtml: htmlContentFinal, cssFiles: [] };
       const res = await fetch(`${BASE_URL}/vercel/deploy`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
       const data = await res.json();
-
       if (res.ok) {
-        alert(`Publicado com sucesso!\nURL: https://${data.deployUrl}\nSubdomínio: ${data.subdomain}`);
+        alert(`Publicado com sucesso!\nURL: https://${data.deployUrl}\nSubdomínio: ${data.subdomain}` );
       } else {
         console.error(data);
         alert(`Falha ao publicar: ${data.error || "Erro desconhecido"}`);
@@ -186,6 +179,7 @@ ${presellCss}
     }
   };
 
+  // --- SEU JSX ORIGINAL E FUNCIONAL ---
   return (
     <div className="montar-presell">
       <div className="formulario">
@@ -209,18 +203,6 @@ ${presellCss}
           </div>
         ))}
         <button type="button" onClick={addBenefit}>Adicionar Benefício</button>
-        {/*
-        <h3>FAQs</h3>
-        {formData.faqs.map((faq,i)=>(
-          <div key={i}>
-            <input value={faq.question} placeholder="Pergunta" onChange={(e)=>handleFaqChange(i,"question",e.target.value)} />
-            <input value={faq.answer} placeholder="Resposta" onChange={(e)=>handleFaqChange(i,"answer",e.target.value)} />
-            <button type="button" onClick={()=>removeFaq(i)}>Remover</button>
-          </div>
-        ))}
-        <button type="button" onClick={addFaq}>Adicionar FAQ</button>
-        */}
-
         
         <div style={{marginTop:20}}>
           <button onClick={()=>{const blob=new Blob([buildFinalHtml()],{type:"text/html"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="index.html";a.click();}}>Gerar HTML</button>

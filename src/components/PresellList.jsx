@@ -1,206 +1,150 @@
-import React, { useEffect, useState } from "react";
-import { FiCopy, FiEye, FiTrash2 } from "react-icons/fi";
+import React, { useEffect, useState, useCallback } from "react";
+import { FiCopy, FiEye, FiTrash2, FiLoader, FiCheckCircle, FiAlertTriangle, FiXCircle } from "react-icons/fi";
 import "./PresellList.css";
+
+const StatusBadge = ({ status, message }) => {
+  let icon = <FiLoader className="spinner" />;
+  let className = "status-badge pending";
+  let text = message || "Pendente";
+
+  if (status === "ativo") {
+    icon = <FiCheckCircle />;
+    className = "status-badge active";
+    text = "Ativo";
+  } else if (message?.toLowerCase().includes("erro") || message?.toLowerCase().includes("falha") || message?.toLowerCase().includes("⚠️")) {
+    icon = <FiXCircle />;
+    className = "status-badge error";
+    text = "Falha";
+  } else if (message === "Verificando... ⏳") {
+    text = "Verificando...";
+  }
+
+  return (
+    <div className={className} title={message}>
+      {icon}
+      <span>{text}</span>
+    </div>
+  );
+};
 
 function PresellList() {
   const userId = localStorage.getItem("userId");
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState("");
-  const [verificando, setVerificando] = useState(false);
-
   const BASE_URL = "https://gerador-presell.vercel.app";
 
-  useEffect(() => {
-    if (!userId) return;
+  const verificarTodosOsSubdominios = useCallback(async (projetosParaVerificar ) => {
+    for (const proj of projetosParaVerificar) {
+      if (!proj.dominio || !proj.subdominio || !proj.projeto_vercel) {
+        setProjects(prev => prev.map(p => p.id === proj.id ? { ...p, checked: true, vercelMessage: "Dados insuficientes" } : p));
+        continue;
+      }
+      setProjects(prev => prev.map(p => p.id === proj.id ? { ...p, vercelMessage: "Verificando... ⏳" } : p));
+      try {
+        const resp = await fetch(`${BASE_URL}/check-subdomain`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ projectId: proj.projeto_vercel, subdominio: proj.subdominio }),
+        });
+        const data = await resp.json();
+        setProjects(prev => prev.map(p => p.id === proj.id ? { ...p, status: data.status === "ativo" && !data.invalidConfiguration ? "ativo" : "pendente", vercelMessage: data.vercelMessage, checked: true } : p));
+      } catch (err) {
+        setProjects(prev => prev.map(p => p.id === proj.id ? { ...p, status: "pendente", checked: true, vercelMessage: "Erro ao verificar ⚠️" } : p));
+      }
+    }
+  }, [BASE_URL]);
 
-    const fetchProjects = async () => {
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      setErro("ID do usuário não encontrado. Faça login novamente.");
+      return;
+    }
+    const fetchProjectsEVerificar = async () => {
+      setLoading(true);
       try {
         const resp = await fetch(`${BASE_URL}/projects/${userId}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         });
-
         if (!resp.ok) throw new Error("Erro ao buscar projetos");
         const data = await resp.json();
-
-        setProjects(
-          data.map((p) => ({
-            ...p,
-            checked: false,
-            vercelMessage: "",
-          }))
-        );
+        const projetosIniciais = data.map((p) => ({ ...p, checked: false, vercelMessage: "" }));
+        setProjects(projetosIniciais);
+        if (projetosIniciais.length > 0) {
+          verificarTodosOsSubdominios(projetosIniciais);
+        }
       } catch (err) {
-        console.error(err);
         setErro("Não foi possível carregar os projetos");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchProjects();
-  }, [userId]);
+    fetchProjectsEVerificar();
+  }, [userId, BASE_URL, verificarTodosOsSubdominios]);
 
   const copiarLink = (url) => {
-    navigator.clipboard
-      .writeText(url)
-      .then(() => alert("Link copiado!"))
-      .catch(() => alert("Falha ao copiar o link"));
+    navigator.clipboard.writeText(url).then(() => alert("Link copiado!")).catch(() => alert("Falha ao copiar o link"));
   };
 
   const excluirProjeto = async (idDoBanco) => {
     if (!window.confirm("Deseja realmente excluir este projeto?")) return;
-
     try {
       const resp = await fetch(`${BASE_URL}/vercel/delete`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("token")}` },
         body: JSON.stringify({ projetoId: idDoBanco, userId }),
       });
-
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || "Erro ao excluir projeto");
-
       setProjects((prev) => prev.filter((p) => p.id !== idDoBanco));
       alert("Projeto excluído com sucesso!");
     } catch (err) {
-      console.error(err);
       alert("Erro ao excluir o projeto: " + err.message);
     }
   };
 
-  // Verificação de subdomínios
-  useEffect(() => {
-    if (projects.length === 0 || verificando) return;
-
-    const verificarSubdominios = async () => {
-      setVerificando(true);
-
-      const pendentes = projects.filter(
-        (p) => !p.checked && p.dominio && p.subdominio && p.projeto_vercel
-      );
-
-      for (const proj of pendentes) {
-        setProjects((prev) =>
-          prev.map((p) =>
-            p.id === proj.id ? { ...p, vercelMessage: "Verificando... ⏳" } : p
-          )
-        );
-
-        try {
-          const resp = await fetch(`${BASE_URL}/check-subdomain`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              projectId: proj.projeto_vercel,
-              subdominio: proj.subdominio,
-            }),
-          });
-
-          const data = await resp.json();
-
-          setProjects((prev) =>
-            prev.map((p) =>
-              p.id === proj.id
-                ? {
-                    ...p,
-                    status:
-                      data.status === "ativo" && !data.invalidConfiguration
-                        ? "ativo"
-                        : "pendente",
-                    vercelMessage: data.vercelMessage,
-                    checked: true,
-                  }
-                : p
-            )
-          );
-        } catch (err) {
-          console.error("Erro na verificação:", err);
-          setProjects((prev) =>
-            prev.map((p) =>
-              p.id === proj.id
-                ? {
-                    ...p,
-                    status: "pendente",
-                    checked: true,
-                    vercelMessage: "Erro ao verificar subdomínio ⚠️",
-                  }
-                : p
-            )
-          );
-        }
-      }
-
-      setVerificando(false);
-    };
-
-    verificarSubdominios();
-  }, [projects, verificando]);
-
-  if (loading) return <p>Carregando...</p>;
-  if (erro) return <p className="erro">{erro}</p>;
-
-  const columns = [
-    "Data de criação",
-    "Nome do produto",
-    "Domínio",
-    "Subdomínio",
-    "Status",
-    "Ações",
-  ];
+  if (loading) return <div className="list-feedback"><FiLoader className="spinner" /> Carregando projetos...</div>;
+  if (erro) return <div className="list-feedback error"><FiAlertTriangle /> {erro}</div>;
 
   return (
-    <div className="presell-list">
-      <h2>Meus Projetos</h2>
+    <div className="presell-list-wrapper">
       {projects.length === 0 ? (
-        <p>Nenhum projeto criado ainda.</p>
+        <div className="list-feedback">Nenhum projeto criado ainda.</div>
       ) : (
-        <>
-          {/* Cabeçalho desktop */}
-          <div className="projects-header">
-            {columns.map((col, index) => (
-              <div className="header-item" key={index}>
-                {col}
-              </div>
-            ))}
-          </div>
-
-          <div className="projects-list">
-            {projects.map((proj, index) => {
-              const subdomainUrl = proj.subdominio || proj.url;
-              return (
-                <div className="project-row" key={`${proj.id}-${index}`}>
-                  <div className="project-item" data-label="Data de criação">
-                    {new Date(proj.created_at).toLocaleString("pt-BR")}
+        <div className="projects-grid">
+          {projects.map((proj) => {
+            const subdomainUrl = proj.subdominio || proj.url;
+            const fullUrl = `https://${subdomainUrl}`;
+            return (
+              <div className="project-card" key={proj.id}>
+                <div className="card-header">
+                  <h3 className="card-title">{proj.nome_produto}</h3>
+                  <StatusBadge status={proj.status} message={proj.vercelMessage} />
+                </div>
+                <div className="card-body">
+                  <div className="info-group">
+                    <label>Link da Presell</label>
+                    <a href={fullUrl} target="_blank" rel="noopener noreferrer">{subdomainUrl}</a>
                   </div>
-                  <div className="project-item" data-label="Nome do produto">
-                    {proj.nome_produto}
+                  <div className="info-group">
+                    <label>Domínio Principal</label>
+                    <span>{proj.dominio || "N/A"}</span>
                   </div>
-                  <div className="project-item" data-label="Domínio" title={proj.dominio}>
-                    {proj.dominio}
-                  </div>
-                  <div className="project-item" data-label="Subdomínio" title={proj.subdominio}>
-                    {proj.subdominio || "pendente"}
-                  </div>
-                  <div className="project-item" data-label="Status" title={proj.vercelMessage || "Pendente"}>
-                    {proj.vercelMessage || "Pendente"}
-                  </div>
-                  <div className="project-actions" data-label="Ações">
-                    <FiCopy title="Copiar" onClick={() => copiarLink(subdomainUrl)} />
-                    <FiEye title="Visualizar" onClick={() => window.open(`https://${subdomainUrl}`, "_blank")} />
-                    <FiTrash2 title="Excluir" onClick={() => excluirProjeto(proj.id)} />
+                  <div className="info-group">
+                    <label>Data de Criação</label>
+                    <span>{new Date(proj.created_at ).toLocaleDateString("pt-BR")}</span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </>
+                <div className="card-footer">
+                  <button className="action-btn" onClick={() => copiarLink(fullUrl)}><FiCopy /> Copiar</button>
+                  <button className="action-btn" onClick={() => window.open(fullUrl, "_blank")}><FiEye /> Ver</button>
+                  <button className="action-btn danger" onClick={() => excluirProjeto(proj.id)}><FiTrash2 /> Excluir</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
